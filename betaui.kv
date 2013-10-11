@@ -1,0 +1,27 @@
+#:kivy 1.7.2
+
+<Interfaz>:
+	orientation: "vertical"
+	spacing: "4dp"
+	BoxLayout:
+		size_hint: 1,1.6
+		Button:
+			size_hint: 2,1
+			text: "Test01"
+		Button:
+			text: "Test02"
+
+	ModalView:
+		ScrollView:
+			GridLayout:
+				rows: 2
+				size_hint_x: "7dp"
+				orientation: "horizontal"
+				Button:
+					text: "test1"
+				Button:
+					text: "test2"
+				Button:
+					text: "test3"
+				Button:
+					text: "test4"

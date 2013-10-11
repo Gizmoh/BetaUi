@@ -5,11 +5,9 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.stacklayout import StackLayout
 from kivy.properties import ObjectProperty
 from kivy.uix.gridlayout import GridLayout
 from kivy.properties import StringProperty
-from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
 from kivy.core.window import Window
 

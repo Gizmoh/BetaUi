@@ -1,6 +1,37 @@
 #:kivy 1.7.2
 
+<CBoton>:
+	size_hint: None,None
+	size:"90dp","90dp"
+
+<row>:
+	orientation: "horizontal"
+	nombre: label
+	codigo: label2
+	cantidad: label3
+	close: Close
+	size_hint: 1,None
+	height: "50dp"
+	Label:
+		id: label
+		text: "TEXT"
+	Label:
+		id: label2
+		text: "1337"
+	Label:
+		id: label3
+		text: "1"
+
+	Button:
+		id: Close
+		size_hint: None,1
+		text: "-"
+
 <Interfaz>:
+	btn: btn
+	caja: caja
+	txt: txt
+	grilla: grilla
 	orientation: "vertical"
 	spacing: "4dp"
 	BoxLayout:
@@ -9,6 +40,7 @@
 		Label:
 			text: "cliente"
 		TextInput:
+			id: txt
 			text: "Derp"
 		Label:
 			text: "Dependiente"
@@ -20,84 +52,26 @@
 			text: "14,14,14"
 	BoxLayout:
 		size_hint: 1,1.6
-		TextInput:
-			size_hint: 2,1
-			text: "Test01"
+		BoxLayout:
+			ScrollView:
+				do_scroll_x: False
+				GridLayout:
+					orientation: "vertical"
+					cols: 1
+					id: caja
+					size_hint_y: None
 		Button:
+			id: btn
+			size_hint:.25,1
 			text: "Test02"
-
-	ModalView:
-		ScrollView:
-			scroll_distance: "15dp"
-			do_scroll_y: False
-			GridLayout:
-				rows: 2
-				size_hint_x: "2dp"
-				orientation: "horizontal"
-				spacing: "20dp"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					text: "test2"
-				Button:
-					text: "test3"
-				Button:
-					text: "test4"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
-				Button:
-					color: (1,0,0,1)
-					text: "test1"
+	BoxLayout:
+		AbstractView:
+			ScrollView:
+				scroll_distance: "15dp"
+				do_scroll_y: False
+				GridLayout:
+					id: grilla
+					rows: 2
+					size_hint_x: None
+					orientation: "horizontal"
+					spacing: "20dp"

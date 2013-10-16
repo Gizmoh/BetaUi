@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+
 import kivy
+import controller
 kivy.require('1.7.2') # replace with your current kivy version !
 
 from kivy.app import App
@@ -22,6 +25,7 @@ class row(BoxLayout):
 class CBoton (Button):
 	nombre = ""
 	codigo = ""
+	precio = ""
 
 
 class Interfaz(BoxLayout):
@@ -41,11 +45,13 @@ class Interfaz(BoxLayout):
 		grilla = ObjectProperty(None)
 		self.btn = ObjectProperty(None)
 		self.boton.ident = "test01"
-		for i in range (50):
+		products = controller.get_products()
+		for fila in products:
 			Q = CBoton()
-			Q.nombre = "derp"+str(i)
-			Q.text = Q.nombre
-			Q.codigo = str(19*i)
+			Q.nombre = fila[0]
+			Q.text = fila[0]
+			Q.codigo = fila[1]
+			Q.precio = fila[2]
 			Q.bind(on_press = self.addStuff)
 			self.grilla.add_widget(Q)
 			self.grilla.bind(minimum_width=self.grilla.setter('width'))

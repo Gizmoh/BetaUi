@@ -20,6 +20,7 @@ class row(BoxLayout):
 	codigo = ObjectProperty(None)
 	cantidad = ObjectProperty(None)
 	close = ObjectProperty(None)
+	add = ObjectProperty(None)
 	contador = 1
 
 class CBoton (Button):

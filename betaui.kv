@@ -3,33 +3,56 @@
 <CBoton>:
 	size_hint: None,None
 	size:"90dp","90dp"
-	shorten: True
-	text_size: 100, None
-
+	text_size: 85, None
+	multiline: True
+	
 <row>:
+	canvas:
+		Color:
+			rgb: 1,1,1
+		Rectangle:
+			size: self.size
+			pos: self.pos
 	orientation: "horizontal"
 	nombre: label
 	codigo: label2
 	cantidad: label3
 	close: Close
+	add: add
 	size_hint: 1,None
 	height: "50dp"
+	Button:
+		id: add
+		size_hint: None,1
+		Image:
+			source: 'add.png'
+			y: self.parent.y-25
+			x: self.parent.x
+			allow_stretch: False
 	Label:
 		id: label
 		shorten: True
-		text_size: 90, None
+		color: 0,0,0,1
+		text_size: 125, None
+		multiline: True
 		text: "TEXT"
 	Label:
 		id: label2
 		text: "1337"
+		color: 0,0,0,1
 	Label:
 		id: label3
 		text: "1"
+		color: 0,0,0,1
 
 	Button:
 		id: Close
 		size_hint: None,1
-		text: "-"
+		Image:
+			source: 'delete.png'
+			y: self.parent.y-25
+			x: self.parent.x
+			allow_stretch: False
 
 <Interfaz>:
 	btn: btn
@@ -56,11 +79,18 @@
 			text: "14,14,14"
 	BoxLayout:
 		size_hint: 1,1.6
+		canvas:
+			Color:
+				rgb: .75,.75,.75
+			Rectangle:
+				pos:self.pos
+				size:self.size
 		BoxLayout:
 			ScrollView:
 				do_scroll_x: False
 				GridLayout:
 					orientation: "vertical"
+					spacing: "5dp"
 					cols: 1
 					id: caja
 					size_hint_y: None

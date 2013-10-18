@@ -11,6 +11,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
 from kivy.uix.gridlayout import GridLayout
 from kivy.properties import StringProperty
+from kivy.uix.spinner import Spinner
 from kivy.uix.button import Button
 from kivy.core.window import Window
 
@@ -21,7 +22,10 @@ class row(BoxLayout):
 	cantidad = ObjectProperty(None)
 	close = ObjectProperty(None)
 	add = ObjectProperty(None)
+	precioU = ObjectProperty(None)
+	precioT = ObjectProperty(None)
 	contador = 1
+	precio = ""
 
 class CBoton (Button):
 	nombre = ""
@@ -30,13 +34,7 @@ class CBoton (Button):
 
 
 class Interfaz(BoxLayout):
-	boton = CBoton()
-	lulbel = Label(text = "TEST")
-	test = True
-	contador = 0
-	X = 0
 	lista = []
-
 
 
 	def __init__(self,**kwargs):
@@ -45,7 +43,6 @@ class Interfaz(BoxLayout):
 		txt = ObjectProperty(None)
 		grilla = ObjectProperty(None)
 		self.btn = ObjectProperty(None)
-		self.boton.ident = "test01"
 		products = controller.get_products()
 		for fila in products:
 			Q = CBoton()
@@ -53,30 +50,42 @@ class Interfaz(BoxLayout):
 			Q.text = fila[0]
 			Q.codigo = fila[1]
 			Q.precio = fila[2]
-			Q.bind(on_press = self.addStuff)
+			Q.bind(on_press = self.addRow)
 			self.grilla.add_widget(Q)
 			self.grilla.bind(minimum_width=self.grilla.setter('width'))
 
 
-	def addStuff(interfaz,self):
+	def addRow(interfaz,self):
+		test = True
 		temp = row()
 		temp.nombre.text = (self.text)
 		temp.codigo.text = (self.codigo)
+		temp.precioU.text = str(self.precio)
+		temp.precio = self.precio
+		temp.precioT.text = str(self.precio*temp.contador)
 		temp.close.bind(on_press= interfaz.removeStuff)
+		temp.add.bind(on_press = interfaz.moarStuff)
 		for tmp in interfaz.lista:
 			if tmp.nombre.text == self.text:
 				tmp.contador = tmp.contador + 1
 				tmp.cantidad.text = str(tmp.contador)
-				interfaz.test = False
-		if interfaz.test == True:
+				tmp.precioT.text = str(self.precio*tmp.contador)
+				test = False
+		if test == True:
 			interfaz.lista.append(temp)
 			interfaz.caja.add_widget(temp)
 			interfaz.caja.bind(minimum_height=interfaz.caja.setter('height'))
-		interfaz.test = True
+		test = True
+
+	def moarStuff(interfaz, self):
+		self.parent.contador = self.parent.contador +1
+		self.parent.cantidad.text = str(self.parent.contador)
+		self.parent.precioT.text = str(self.parent.precio*self.parent.contador)
 
 	def removeStuff(interfaz,self):
 		self.parent.contador = self.parent.contador - 1
 		self.parent.cantidad.text = str(self.parent.contador)
+		self.parent.precioT.text = str(self.parent.precio*self.parent.contador)
 		if self.parent.contador == 0:
 			interfaz.caja.remove_widget(self.parent)
 			interfaz.lista.remove(self.parent)

@@ -1,11 +1,19 @@
 #:kivy 1.7.2
 
+<DropMenu>:
+	Label:
+		text: "huehue"
+	Label:
+		text: "derpderp"
+	buton:
+		text: "click me plz"
+
 <CBoton>:
 	size_hint: None,None
 	size:"90dp","90dp"
 	text_size: 85, None
 	multiline: True
-	
+
 <row>:
 	canvas:
 		Color:
@@ -14,44 +22,68 @@
 			size: self.size
 			pos: self.pos
 	orientation: "horizontal"
-	nombre: label
-	codigo: label2
-	cantidad: label3
+	nombre: nombre
+	codigo: codigo
+	cantidad: cantidad
 	close: Close
 	add: add
+	precioU: precioU
+	precioT: precioT
 	size_hint: 1,None
-	height: "50dp"
+	height: "30dp"
 	Button:
 		id: add
 		size_hint: None,1
+		width: 33
 		Image:
 			source: 'add.png'
-			y: self.parent.y-25
-			x: self.parent.x
+			y: self.parent.y-36
+			x: self.parent.x-33
 			allow_stretch: False
 	Label:
-		id: label
+		id: codigo
 		shorten: True
 		color: 0,0,0,1
-		text_size: 125, None
+		text_size: None, None
 		multiline: True
 		text: "TEXT"
+		font_size: "14dp"
+		size_hint_x:None
+		width: "200dp"
 	Label:
-		id: label2
+		id: nombre
 		text: "1337"
+		shorten: True
+		text_size: 85, None
 		color: 0,0,0,1
+		font_size: "14dp"
+		width: 90
 	Label:
-		id: label3
+		id: precioU
+		color: 0,0,0,1
+		font_size: "14dp"
+		width: 60
+	Label:
+		id: cantidad
 		text: "1"
 		color: 0,0,0,1
-
+		font_size: "14dp"
+		size_hint_x: None
+		width: "10dp"
+	Label:
+		id: precioT
+		text: "1"
+		color: 0,0,0,1
+		font_size: "14dp"
+		width: 60
 	Button:
 		id: Close
 		size_hint: None,1
+		width: 33
 		Image:
 			source: 'delete.png'
-			y: self.parent.y-25
-			x: self.parent.x
+			y: self.parent.y-36
+			x: self.parent.x-34
 			allow_stretch: False
 
 <Interfaz>:
@@ -66,7 +98,7 @@
 		size_hint: 1, .15
 		Label:
 			text: "cliente"
-		TextInput:
+		Button:
 			id: txt
 			text: "Derp"
 		Label:

@@ -13,7 +13,7 @@ def connect():
 
 def get_products():
 	"""
-	Obtiene todos los animales
+	Obtiene productoa
 	"""
 	con = connect()
 	c = con.cursor()
@@ -22,3 +22,15 @@ def get_products():
 	products = result.fetchall()
 	con.close()
 	return products
+
+def get_users():
+	"""
+	Obtiene Usuarios
+	"""
+	con = connect()
+	c = con.cursor()
+	query = """SELECT username FROM auth_user"""
+	result = c.execute(query)
+	users = result.fetchall()
+	con.close()
+	return users

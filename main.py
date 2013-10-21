@@ -39,11 +39,17 @@ class Interfaz(BoxLayout):
 
 	def __init__(self,**kwargs):
 		super(Interfaz, self).__init__(**kwargs)
+		listaB = []
 		caja = ObjectProperty(None)
 		txt = ObjectProperty(None)
 		grilla = ObjectProperty(None)
 		self.btn = ObjectProperty(None)
 		products = controller.get_products()
+		users = controller.get_users()
+		for i in users:
+			listaB.append(i[0])
+		self.txt.text = listaB[0]
+		self.txt.values = listaB
 		for fila in products:
 			Q = CBoton()
 			Q.nombre = fila[0]
@@ -53,6 +59,7 @@ class Interfaz(BoxLayout):
 			Q.bind(on_press = self.addRow)
 			self.grilla.add_widget(Q)
 			self.grilla.bind(minimum_width=self.grilla.setter('width'))
+
 
 
 	def addRow(interfaz,self):

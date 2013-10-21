@@ -67,7 +67,7 @@ class Interfaz(BoxLayout):
 			Q.background_color = 1,1,1,(kek%2+0.5)
 			kek = kek+1
 			Q.nombre = fila[0]
-			Q.text = fila[0]
+			Q.text = fila[0][:20]
 			Q.codigo = fila[1]
 			Q.precio = fila[2]
 			Q.bind(on_press = self.addRow)

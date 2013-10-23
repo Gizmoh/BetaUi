@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import kivy
-import controller
+import rudo
+import datetime
 kivy.require('1.7.2') # replace with your current kivy version !
 
 from kivy.app import App
@@ -18,128 +19,168 @@ from kivy.event import EventDispatcher
 
 
 class row(BoxLayout):
-	nombre = ObjectProperty(None)
-	codigo = ObjectProperty(None)
-	cantidad = ObjectProperty(None)
+	name = ObjectProperty(None)
+	code = ObjectProperty(None)
+	quantity = ObjectProperty(None)
 	close = ObjectProperty(None)
 	add = ObjectProperty(None)
-	precioU = ObjectProperty(None)
-	precioT = ObjectProperty(None)
-	contador = 1
-	precio = ""
+	priceU = ObjectProperty(None)
+	priceT = ObjectProperty(None)
+	counter = 1
+	price = ""
 
 class CBoton (Button):
-	nombre = ""
-	codigo = ""
-	precio = ""
+	name = ""
+	code = ""
+	price = ""
 
 
 class Interfaz(BoxLayout):
-	lista = []
-	kek = 0
+	listA = []
+	cost = 0
 
 	def __init__(self,**kwargs):
 		#Inicializacion de la interfaz
 		super(Interfaz, self).__init__(**kwargs)
 		#Definicion de Variables
-		listaB = []
-		kek = 1
-		caja = ObjectProperty(None)
+		listB = []
+		aux = 1
+		today = datetime.date.today()
+		box = ObjectProperty(None)
 		txt = ObjectProperty(None)
-		grilla = ObjectProperty(None)
+		grid = ObjectProperty(None)
 		discount = ObjectProperty(None)
 		total = ObjectProperty(None)
 		save = ObjectProperty(None)
-		imprimir = ObjectProperty(None)
+		printAct = ObjectProperty(None)
 		send = ObjectProperty(None)
 		money = ObjectProperty(None)
-		self.discount.bind(focus = self.addDiscount)
-		products = controller.get_products()
-		users = controller.get_users()
+		date = ObjectProperty(None)
+		self.discount.bind(is_open = self.addDiscount)
+		products = rudo.products
+		users = rudo.users
+		self.save.background_color = 0,147,0,.5
+		self.save.bind(on_press = self.press)
+		self.save.bind(on_release = self.release)
+		self.send.background_color = 162,0,170,.5
+		self.send.bind(on_press = self.pressB)
+		self.send.bind(on_release = self.releaseB)
+		self.printAct.background_color = 162,0,170,.5
+		self.printAct.bind(on_press = self.pressB)
+		self.printAct.bind(on_release = self.releaseB)
 		#Ingreso de usuarios al Spinner
 		for i in users:
-			listaB.append(i[0])
-		self.txt.text = listaB[0]
-		self.txt.values = listaB
-		#Ingreso de productos a la lista deslizante
+			listB.append(i[0])
+		self.txt.text = listB[0]
+		self.txt.values = listB
+		#Configuro la fecha
+		self.date.text = today.strftime("%d") + "/"+ today.strftime("%m") + "/"+ today.strftime("%Y")
+		#Ingreso de productos a la listA deslizante
 		for fila in products:
 			Q = CBoton()
-			Q.background_color = 1,1,1,(kek%2+0.5)
-			kek = kek+1
-			Q.nombre = fila[0]
+			Q.background_color = 1,1,1,(aux%2+0.5)
+			aux = aux+1
+			Q.name = fila[0]
 			Q.text = fila[0][:20]
-			Q.codigo = fila[1]
+			Q.code = fila[1]
 			Q.precio = fila[2]
 			Q.bind(on_press = self.addRow)
-			self.grilla.add_widget(Q)
-			self.grilla.bind(minimum_width=self.grilla.setter('width'))
+			self.grid.add_widget(Q)
+			self.grid.bind(minimum_width=self.grid.setter('width'))
 
 
 
-	def addRow(interfaz,self):#Agrega productos a la grilla
+	def addRow(interfaz,self):#Agrega productos a la grid
 		test = True
 		temp = row()
-		temp.nombre.text = (self.text)
-		temp.codigo.text = (self.codigo)
-		temp.precioU.text = ("$ "+str(self.precio))
+		temp.name.text = (self.text)
+		temp.code.text = (self.code)
+		temp.priceU.text = ("$ "+str(self.precio))
 		temp.precio = self.precio
-		temp.precioT.text = str(self.precio*temp.contador)
+		temp.priceT.text = format_price(self.precio*temp.counter)
 		temp.close.bind(on_press= interfaz.removeStuff)
 		temp.add.bind(on_press = interfaz.moarStuff)
-		for tmp in interfaz.lista:
-			if tmp.nombre.text == self.text:
-				tmp.contador = tmp.contador + 1
-				tmp.cantidad.text = str(tmp.contador)
-				tmp.precioT.text = str(self.precio*tmp.contador)
+		for tmp in interfaz.listA:
+			if tmp.code.text == self.code:
+				tmp.counter = tmp.counter + 1
+				tmp.quantity.text = str(tmp.counter)
+				tmp.priceT.text = format_price(self.precio*tmp.counter)
 				test = False
 				setPrice(interfaz)
 		if test == True:
-			interfaz.lista.append(temp)
-			interfaz.caja.add_widget(temp)
-			interfaz.caja.bind(minimum_height=interfaz.caja.setter('height'))
+			interfaz.listA.append(temp)
+			interfaz.box.add_widget(temp)
+			interfaz.box.bind(minimum_height=interfaz.box.setter('height'))
 			setPrice(interfaz)
 		test = True
 
-	def moarStuff(interfaz, self):#Agrega mas productos a elementos de la grilla, mediante el boton
-		self.parent.contador = self.parent.contador +1
-		self.parent.cantidad.text = str(self.parent.contador)
-		self.parent.precioT.text = str(self.parent.precio*self.parent.contador)
+	def moarStuff(interfaz, self):#Agrega mas productos a elementos de la grid, mediante el boton
+		self.parent.counter = self.parent.counter +1
+		self.parent.quantity.text = str(self.parent.counter)
+		self.parent.priceT.text = format_price(self.parent.precio*self.parent.counter)
 		setPrice(interfaz)
 
-	def removeStuff(interfaz,self):#Reduce y elimina productos de la grilla
-		self.parent.contador = self.parent.contador - 1
-		self.parent.cantidad.text = str(self.parent.contador)
-		self.parent.precioT.text = str(self.parent.precio*self.parent.contador)
-		if self.parent.contador == 0:
-			interfaz.caja.remove_widget(self.parent)
-			interfaz.lista.remove(self.parent)
+	def removeStuff(interfaz,self):#Reduce y elimina productos de la grid
+		self.parent.counter = self.parent.counter - 1
+		self.parent.quantity.text = str(self.parent.counter)
+		self.parent.priceT.text = format_price(self.parent.precio*self.parent.counter)
+		if self.parent.counter == 0:
+			interfaz.box.remove_widget(self.parent)
+			interfaz.listA.remove(self.parent)
 		setPrice(interfaz)
 
 	def addDiscount(interfaz,self, value):
-		temp = float(interfaz.money.text)
+		temp = interfaz.cost
 		if temp == 0:
 			pass
 		if value == False:
 			if float(self.text) > 0:
-				interfaz.total.text = str(float(interfaz.money.text) - ((float(interfaz.money.text)*float(self.text))/100))
+				temp = interfaz.cost - ((interfaz.cost)*int(self.text))/100
+				interfaz.total.text = format_price(temp)
 			if float(self.text) == 0:
-				interfaz.total.text = interfaz.money.text
+				interfaz.total.text = format_price(interfaz.cost)
 
 	def calcDiscount(self):
 		self.addDiscount(self.discount,False)
+
+	def press(interfaz, self):
+		self.background_color = 0,147,0,.3
+
+	def release(interfaz, self):
+		self.background_color = 0,147,0,.5
+
+	def pressB(interfaz, self):
+		self.background_color = 162,0,170,.3
+
+	def releaseB(interfaz, self):
+		self.background_color = 162,0,170,.5
 
 
 def setPrice(interfaz):#Sets prices
 	temp = 0
 	#print(interfaz.money.text)
-	for i in interfaz.lista:
-		temp = temp + (float(i.precioT.text))
-	interfaz.money.text = str(temp)
+	for i in interfaz.listA:
+		temp = temp + i.precio*i.counter
+	interfaz.money.text = format_price(temp)
+	interfaz.cost = temp
 	interfaz.calcDiscount()
+
+def format_float(n, decimals=1):
+    """float -> string"""
+    t = {",": ".", ".": ","}
+    return "".join(t.get(c, c) for c in format(n, ",.{}f".format(decimals)))
+
+
+def format_price(p, sym="$", decimals=0):
+    """int -> string"""
+    if sym == "CL":
+        sym = "$"
+    return u"{0} {1}".format(sym, format_float(p, decimals=decimals))
+
 
 
 def Check(self):
-	if self.lista.__contains__(self.text)==True:
+	if self.listA.__contains__(self.text)==True:
 		pass
 
 class BetaUiApp(App):

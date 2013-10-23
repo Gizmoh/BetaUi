@@ -16,24 +16,24 @@
 			size: self.size
 			pos: self.pos
 	orientation: "horizontal"
-	nombre: nombre
-	codigo: codigo
-	cantidad: cantidad
+	name: nombre
+	code: codigo
+	quantity: cantidad
 	close: Close
 	add: add
-	precioU: precioU
-	precioT: precioT
+	priceU: precioU
+	priceT: precioT
 	size_hint: 1,None
-	height: "30dp"
+	height: "45dp"
 	Button:
-		##Boton para agregar mas productos
-		id: add
+		##Boton para reducir y eliminar productos
+		id: Close
 		size_hint: None,1
 		width: 33
 		Image:
-			source: 'add.png'
-			y: self.parent.y-35
-			x: self.parent.x-33
+			source: 'remove.png'
+			y: self.parent.y-29
+			x: self.parent.x-34
 			allow_stretch: False
 	Label:
 		##Label que contiene el codigo del producto
@@ -43,7 +43,7 @@
 		text_size: None, None
 		multiline: True
 		text: "TEXT"
-		font_size: "14dp"
+		font_size: "17dp"
 		size_hint_x:None
 		width: "200dp"
 	Label:
@@ -53,20 +53,20 @@
 		shorten: True
 		text_size: 85, None
 		color: 0,0,0,1
-		font_size: "14dp"
+		font_size: "17dp"
 		width: 90
 	Label:
 		##Label que contiene el precio unitario
 		id: precioU
 		color: 0,0,0,1
-		font_size: "14dp"
+		font_size: "17dp"
 		width: 60
 	Label:
 		##Label que contiene la cantidad del producto
 		id: cantidad
 		text: "1"
 		color: 0,0,0,1
-		font_size: "14dp"
+		font_size: "17dp"
 		size_hint_x: None
 		width: "10dp"
 	Label:
@@ -74,17 +74,17 @@
 		id: precioT
 		text: "1"
 		color: 0,0,0,1
-		font_size: "14dp"
+		font_size: "17dp"
 		width: 60
 	Button:
-		##Boton para reducir y eliminar productos
-		id: Close
+		##Boton para agregar mas productos
+		id: add
 		size_hint: None,1
 		width: 33
 		Image:
-			source: 'delete.png'
-			y: self.parent.y-36
-			x: self.parent.x-34
+			source: 'mas.png'
+			y: self.parent.y-29
+			x: self.parent.x-33
 			allow_stretch: False
 
 <Interfaz>:
@@ -94,11 +94,12 @@
 	discount: discount
 	total: total
 	save: save
-	imprimir: imprimir
+	printAct: imprimir
 	send: send
-	caja: caja
+	box: caja
 	txt: txt
-	grilla: grilla
+	grid: grilla
+	date: fecha
 	orientation: "vertical"
 	spacing: "4dp"
 	BoxLayout:
@@ -112,11 +113,13 @@
 		Label:
 			text: "Dependiente"
 		TextInput:
-			text: "HueHue"
+			text: "Name"
+			multiline: False
 		Label:
 			text: "Fecha"
-		TextInput:
-			text: "14,14,14"
+		Label:
+			id: fecha
+			text: ""
 	BoxLayout:
 	#Barra superior de la grilla
 		orientation:"horizontal"
@@ -157,6 +160,12 @@
 			orientation: "vertical"
 			size_hint: .25,1
 			GridLayout:
+				canvas:
+					Color:
+						rgba: 1,1,1,.33
+					Rectangle:
+						pos: self.pos
+						size: self.size
 				##Contenedor del desglose de precios
 				orientation: "vertical"
 				cols: 2
@@ -165,27 +174,24 @@
 					size_hint: 1,.2
 				Label:
 					id: money
-					text: "0.0"
+					text: "$ 0"
 					size_hint: 1,.2
 				Label:
 					text: "Descuento :"
 					size_hint: 1,.08
-				TextInput:
+				Spinner:
 					id: discount
-					multiline: False
 					text: "0"
+					values: "0","5","10","15","20","25"
 					size_hint: 1,.08
-				Label:
-					text: "Total :"
-					font_size: "20dp"
-					size_hint: 1,.2
-				Label:
-					id: total
-					font_size: "20dp"
-					text: "0"
-					size_hint: 1,.2
+			Label:
+			##Precio Total
+				id: total
+				font_size: "30dp"
+				text: "$ 0"
+				size_hint: 1,.6
 			Button:
-				background_color: 0,2,0,1
+			##Boton de Guardado
 				size_hint: 1,.4
 				id: save
 				text: "Guardar"
